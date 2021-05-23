@@ -1,0 +1,6 @@
+00CARROS23-05-2021 15:30:0001
+020010Polo                Volkswagen          17001Popular             
+020011Ka                  Ford                17001Popular             
+020012Hb20                Hyundai             16501Popular             
+020013Panamera            Porsche             29903Esportivo           
+0100004

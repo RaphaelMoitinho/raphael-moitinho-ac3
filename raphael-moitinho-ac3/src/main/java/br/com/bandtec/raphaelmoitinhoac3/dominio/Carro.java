@@ -1,24 +1,26 @@
 package br.com.bandtec.raphaelmoitinhoac3.dominio;
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.*;
 
 @Entity
 public class Carro {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Max(9999)
     private Integer id;
 
     @NotBlank
+    @Size(max = 20)
     private String nome;
 
     @NotBlank
+    @Size(max = 20)
     private String marca;
 
     @NotNull
     @PositiveOrZero
+    @Max(999)
     private Integer velocidadeMaxima;
 
     @ManyToOne
