@@ -1,4 +1,4 @@
-package br.com.bandtec.raphaelmoitinhoac3.servico;
+package br.com.bandtec.raphaelmoitinhoac3.dominio;
 public class PilhaObj <T> {
 
     private Integer topo;

@@ -1,10 +1,10 @@
 package br.com.bandtec.raphaelmoitinhoac3.controle;
 
 import br.com.bandtec.raphaelmoitinhoac3.dominio.CategoriaCarro;
-import br.com.bandtec.raphaelmoitinhoac3.servico.FilaObj;
-import br.com.bandtec.raphaelmoitinhoac3.servico.PilhaObj;
+import br.com.bandtec.raphaelmoitinhoac3.dominio.FilaObj;
+import br.com.bandtec.raphaelmoitinhoac3.dominio.PilhaObj;
 import br.com.bandtec.raphaelmoitinhoac3.repositorio.CategoriaCarroRepository;
-import br.com.bandtec.raphaelmoitinhoac3.servico.CategoriaCarroDto;
+import br.com.bandtec.raphaelmoitinhoac3.dominio.CategoriaCarroDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -69,7 +69,7 @@ public class CategoriaCarroController {
     public ResponseEntity getRequisicao(@PathVariable int id){
         CategoriaCarroDto proximo = new CategoriaCarroDto(repository.findById(id).get().getId(), repository.findById(id).get().getNome());
         aguardando.insert(proximo);
-        return ResponseEntity.status(200).body("Protocolo: " + proximo.getProtocolo().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
+        return ResponseEntity.status(200).body("Protocolo: " + proximo.getProtocolo());
     }
 
     @GetMapping("/tratar")
@@ -77,8 +77,9 @@ public class CategoriaCarroController {
         if (aguardando.isEmpty()){
             return ResponseEntity.status(204).body("Nada a ser tratado");
         }
-            lista.add(aguardando.poll());
+        lista.add(aguardando.poll());
         return ResponseEntity.status(200).build();
+
     }
 
 

@@ -1,24 +1,35 @@
-package br.com.bandtec.raphaelmoitinhoac3.servico;
+package br.com.bandtec.raphaelmoitinhoac3.dominio;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
+@Entity
 public class CategoriaCarroDto {
 
-    private LocalDateTime protocolo;
+    @Id
+    private String protocolo = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+
     private Integer id;
+
     private String nome;
 
     public CategoriaCarroDto(Integer id, String nome) {
-        this.protocolo = LocalDateTime.now();
         this.id = id;
         this.nome = nome;
     }
 
-    public LocalDateTime getProtocolo() {
+    public CategoriaCarroDto() {
+    }
+
+    public String getProtocolo() {
         return protocolo;
     }
 
-    public void setProtocolo(LocalDateTime protocolo) {
+    public void setProtocolo(String protocolo) {
         this.protocolo = protocolo;
     }
 
