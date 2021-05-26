@@ -1,14 +1,12 @@
 package br.com.bandtec.raphaelmoitinhoac3.controle;
 
-import br.com.bandtec.raphaelmoitinhoac3.dominio.CategoriaCarro;
-import br.com.bandtec.raphaelmoitinhoac3.dominio.FilaObj;
-import br.com.bandtec.raphaelmoitinhoac3.dominio.PilhaObj;
+import br.com.bandtec.raphaelmoitinhoac3.dominio.*;
 import br.com.bandtec.raphaelmoitinhoac3.repositorio.CategoriaCarroRepository;
-import br.com.bandtec.raphaelmoitinhoac3.dominio.CategoriaCarroDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +17,7 @@ public class CategoriaCarroController {
 
     private PilhaObj<CategoriaCarro> ultimaOperacao = new PilhaObj<>(20);
     private FilaObj<CategoriaCarroDto> aguardando = new FilaObj<>(20);
-    List<CategoriaCarroDto> lista = new ArrayList<>();
+    private List<CategoriaCarroDto> lista = new ArrayList<>();
 
 
     @Autowired
@@ -67,19 +65,37 @@ public class CategoriaCarroController {
 
     @GetMapping("/requisicao/{id}")
     public ResponseEntity getRequisicao(@PathVariable int id){
-        CategoriaCarroDto proximo = new CategoriaCarroDto(repository.findById(id).get().getId(), repository.findById(id).get().getNome());
-        aguardando.insert(proximo);
-        return ResponseEntity.status(200).body("Protocolo: " + proximo.getProtocolo());
+        String protocolo = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        CategoriaCarro carro = repository.findAll().get(id);
+        if (repository.existsById(id)) {
+            CategoriaCarroDto proximo = new CategoriaCarroDto(protocolo, carro);
+            aguardando.insert(proximo);
+            return ResponseEntity.status(202).body("Protocolo: " + protocolo);
+        }
+        return ResponseEntity.status(404).build();
     }
 
     @GetMapping("/tratar")
     public ResponseEntity getTratar(){
-        if (aguardando.isEmpty()){
-            return ResponseEntity.status(204).body("Nada a ser tratado");
+        if (!aguardando.isEmpty()){
+            lista.add(aguardando.poll());
+            return ResponseEntity.status(202).build();
         }
-        lista.add(aguardando.poll());
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.status(204).body("Nada a ser tratado");
+    }
 
+    @GetMapping("/termino-tratamento/{protocolo}")
+    public ResponseEntity getTerminoTratamento(@PathVariable String protocolo){
+
+        for(int i = 0; i < lista.size(); i++){
+
+            if (lista.get(i).getProtocolo().equals(protocolo)){
+                CategoriaCarroDto remover = lista.get(i);
+                lista.remove(remover);
+                return ResponseEntity.status(200).build();
+            }
+        }
+        return ResponseEntity.status(404).build();
     }
 
 

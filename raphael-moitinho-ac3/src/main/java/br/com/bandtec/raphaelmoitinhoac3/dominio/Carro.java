@@ -26,6 +26,8 @@ public class Carro {
     @ManyToOne
     private CategoriaCarro categoria;
 
+    private String protocolo;
+
     public Integer getId() {
         return id;
     }
@@ -64,5 +66,13 @@ public class Carro {
 
     public void setCategoria(CategoriaCarro categoria) {
         this.categoria = categoria;
+    }
+
+    public String getProtocolo() {
+        return protocolo;
+    }
+
+    public void setProtocolo(String protocolo) {
+        this.protocolo = protocolo;
     }
 }
