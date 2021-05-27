@@ -26,7 +26,15 @@ public class Carro {
     @ManyToOne
     private CategoriaCarro categoria;
 
-    private String protocolo;
+    public Carro() {
+    }
+    public Carro(Integer id, String nome, String marca, Integer velocidadeMaxima, CategoriaCarro categoria) {
+        this.id = id;
+        this.nome = nome;
+        this.marca = marca;
+        this.velocidadeMaxima = velocidadeMaxima;
+        this.categoria = categoria;
+    }
 
     public Integer getId() {
         return id;
@@ -66,13 +74,5 @@ public class Carro {
 
     public void setCategoria(CategoriaCarro categoria) {
         this.categoria = categoria;
-    }
-
-    public String getProtocolo() {
-        return protocolo;
-    }
-
-    public void setProtocolo(String protocolo) {
-        this.protocolo = protocolo;
     }
 }

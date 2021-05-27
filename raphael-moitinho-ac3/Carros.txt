@@ -1,0 +1,8 @@
+00CARROS01-01-2000 00:01:0001
+020010                Polo          Volkswagen17001
+020011                  Ka                Ford17001
+020012                Hb20             Hyundai16501
+020013            Panamera             Porsche29903
+020014             Fiat127                Fiat11002
+0305            De Carga
+0100006

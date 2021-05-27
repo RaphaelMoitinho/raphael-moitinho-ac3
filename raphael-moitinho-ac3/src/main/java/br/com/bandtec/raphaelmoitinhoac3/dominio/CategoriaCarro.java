@@ -21,6 +21,14 @@ public class CategoriaCarro {
     @Size(max = 20)
     private String nome;
 
+    public CategoriaCarro() {
+    }
+
+    public CategoriaCarro(Integer id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
+
     public Integer getId() {
         return id;
     }

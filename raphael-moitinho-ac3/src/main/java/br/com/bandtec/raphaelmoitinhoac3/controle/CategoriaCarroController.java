@@ -2,6 +2,8 @@ package br.com.bandtec.raphaelmoitinhoac3.controle;
 
 import br.com.bandtec.raphaelmoitinhoac3.dominio.*;
 import br.com.bandtec.raphaelmoitinhoac3.repositorio.CategoriaCarroRepository;
+import br.com.bandtec.raphaelmoitinhoac3.util.FilaObj;
+import br.com.bandtec.raphaelmoitinhoac3.util.PilhaObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

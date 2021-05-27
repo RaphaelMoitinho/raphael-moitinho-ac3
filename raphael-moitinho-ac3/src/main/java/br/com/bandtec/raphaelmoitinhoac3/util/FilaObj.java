@@ -1,4 +1,4 @@
-package br.com.bandtec.raphaelmoitinhoac3.dominio;
+package br.com.bandtec.raphaelmoitinhoac3.util;
 
 public class FilaObj<T> {
 
