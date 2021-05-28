@@ -1,38 +1,22 @@
 package br.com.bandtec.raphaelmoitinhoac3.util;
 
-import br.com.bandtec.raphaelmoitinhoac3.dominio.Carro;
-import br.com.bandtec.raphaelmoitinhoac3.dominio.CarroDto;
-import br.com.bandtec.raphaelmoitinhoac3.dominio.CategoriaCarro;
-import br.com.bandtec.raphaelmoitinhoac3.repositorio.CarroRepository;
-import br.com.bandtec.raphaelmoitinhoac3.repositorio.CategoriaCarroRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class LeArquivo {
+    public List leArquivo(FileReader arquivo) {
 
-    @Autowired
-    private CategoriaCarroRepository repositoryCategoria;
-    public FilaObj<Object> corpoArquivo = new FilaObj<>(999);
-
-    public Object leArquivo(FileReader arquivo) {
-
-        FilaObj<Carro> filaCarro = new FilaObj<>(999);
-        FilaObj<CategoriaCarro> filaCategoria = new FilaObj<>(999);
+        List<Object> list = new ArrayList<>();
+        List<Object> listFilaCategoriaCarro = new ArrayList<>();
 
         BufferedReader entrada = new BufferedReader(arquivo);
 
-        Integer idCarro, idCategoria, idCarroCategoria, velocidadeMaximaCarro;
-        String leitura = "", tipoRegistro = "", tipoArquivo = "", dataHoraGeracao = "", versaoLayout = "";
-        String nomeCarro = "", marcaCarro = "";
-        String nomeCategoria = "";
+        String carro = "", categoriaCarro = "", leitura = "", tipoRegistro = "", tipoArquivo = "", dataHoraGeracao = "", versaoLayout = "";
         String body = "";
-        Carro carro = null;
-        CategoriaCarro categoriaCarro = null;
-        int registroLido = 0;
+        Integer registroLido = 0, qantidadeRegistro = 0;
 
         try {
             leitura = entrada.readLine();
@@ -45,30 +29,12 @@ public class LeArquivo {
                     dataHoraGeracao = leitura.substring(8, 27).trim();
                     versaoLayout = leitura.substring(27, 29).trim();
 
-                } else if (tipoRegistro.equals("02")) {
-                    idCarro = Integer.parseInt(leitura.substring(2, 6).trim());
-                    nomeCarro = leitura.substring(6, 26).trim();
-                    marcaCarro = leitura.substring(26, 46).trim();
-                    velocidadeMaximaCarro = Integer.parseInt(leitura.substring(46, 49).trim());
-                    idCarroCategoria = Integer.parseInt(leitura.substring(49, 51).trim());
-                    categoriaCarro = this.repositoryCategoria.getOne(idCarroCategoria);
-                    carro = new Carro(idCarro, nomeCarro, marcaCarro, velocidadeMaximaCarro, categoriaCarro);
-                    filaCarro.insert(carro);
+                } else if (tipoRegistro.equals("02") || tipoRegistro.equals("03")) {
+                    list.add(carro = leitura);
                     registroLido++;
-
-                } else if (tipoRegistro.equals("03")) {
-                    idCategoria = Integer.parseInt(leitura.substring(2, 4).trim());
-                    nomeCategoria = leitura.substring(4, 24).trim();
-                    categoriaCarro = new CategoriaCarro(idCategoria, nomeCategoria);
-                    filaCategoria.insert(categoriaCarro);
-                    registroLido++;
-
 
                 }else if (tipoRegistro.equals("01")){
-                    Integer qantidadeRegistro = Integer.parseInt(leitura.substring(2, 7).trim());
-                    corpoArquivo.insert(categoriaCarro);
-                    corpoArquivo.insert(carro);
-
+                    qantidadeRegistro = Integer.parseInt(leitura.substring(2, 7).trim());
                 } else {
                     System.out.println("Tipo de leitura inválido");
                 }
@@ -76,12 +42,12 @@ public class LeArquivo {
                 leitura = entrada.readLine();
             }
             entrada.close();
-
-
-            return null;
+            if (qantidadeRegistro == registroLido){
+                return list;
+            }
         } catch (IOException e) {
             System.err.printf("Erro ao ler arquivo: %s.\n", e.getMessage());
         }
-        return corpoArquivo;
+        return null;
     }
 }
