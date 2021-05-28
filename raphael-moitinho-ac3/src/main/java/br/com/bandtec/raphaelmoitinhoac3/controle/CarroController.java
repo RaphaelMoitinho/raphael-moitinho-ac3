@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -58,9 +59,10 @@ public class CarroController {
     }
 
     @PutMapping("/turbinar/{id}")
+    @Transactional
     public ResponseEntity PutTurbinarCarro(@Valid @PathVariable int id){
         if (repository.existsById(id)){
-            Carro carro = repository.findAll().get(id-1);
+            Carro carro = repository.findById(id).get();
             carro.setVelocidadeMaxima(carro.getVelocidadeMaxima()+100);
             repository.save(carro);
             return ResponseEntity.status(201).body(carro);
